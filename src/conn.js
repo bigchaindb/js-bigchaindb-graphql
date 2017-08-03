@@ -1,4 +1,4 @@
-import * as driver from 'bigchaindb-driver'
+import * as driver from 'bigchaindb-driver' // eslint-disable-line import/no-namespace
 
 
 export default class BigchainDBGraphQLConnection {

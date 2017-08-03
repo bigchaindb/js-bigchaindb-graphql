@@ -16,6 +16,6 @@
     "eslint-plugin-import": "^2.7.0"
   },
   "scripts": {
-    "test": "./node_modules/babel-cli/bin/babel-node.js ./test/queries.js"
+    "test": "./node_modules/eslint/bin/eslint.js src/ && ./node_modules/babel-cli/bin/babel-node.js ./test/queries.js"
   }
 }
