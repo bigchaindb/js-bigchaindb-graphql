@@ -6,7 +6,7 @@ The code does not talk to the backend database directly. It just retrieves
 whatever data it needs using the JavaScript driver and constructs the GraphQL
 objects from the returned json.
 
-## Usage
+## Setup
 
 ```bash
 $ npm install bigchaindb-graphql
@@ -21,8 +21,13 @@ $ yarn add bigchaindb-graphql
 ```bash
 $ python prepopulate.py
 ```
-This are the transactions used in the next examples.
+These are the transactions used in the examples below.
 
+```bash
+npm run test
+```
+
+## Usage
 
 ```javascript
 import { graphql } from 'graphql'
@@ -32,7 +37,7 @@ import {
 } from 'bigchaindb-graphql'
 
 const BigchainDBSchema = new BigchainDBGraphQLSchema(
-    new BigchainDBGraphQLConnection('http://localhost:9984/api/v1/')
+    new BigchainDBGraphQLConnection("<connection details eg. 'http://localhost:9984/api/v1/', headers>")
 ).schema
 
 const queryTransaction = `
@@ -53,8 +58,7 @@ graphql(BigchainDBSchema, queryTransaction).then(result => {
 
 ## Examples
 
-After prepopulating BigchainDB with the transactions provided you can copy past
-these queries into the GraphQL IDE.
+After prepopulating BigchainDB with the transactions provided you can run the following queries in the browser or node.
 
 - Query a transaction:
 ```graphql
