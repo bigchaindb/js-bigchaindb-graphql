@@ -24,7 +24,7 @@ $ python prepopulate.py
 These are the transactions used in the examples below.
 
 ```bash
-npm run test
+$ npm run test
 ```
 
 ## Usage
