@@ -24,7 +24,7 @@ $ python prepopulate.py
 This are the transactions used in the next examples.
 
 
-```ecmascript 6
+```javascript
 import { graphql } from 'graphql'
 import {
     BigchainDBGraphQLConnection,
