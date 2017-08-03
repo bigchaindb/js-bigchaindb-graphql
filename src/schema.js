@@ -185,22 +185,4 @@ export default class BigchainDBGraphQLSchema {
         })
     }
 }
-// export default class BigchainDBGraphQLSchema {
-//     constructor(conn) {
-//         conn = conn
-//
-//         this.schema = new GraphQLSchema({
-//             query: new GraphQLObjectType({
-//                 name: 'RootQueryType',
-//                 fields: {
-//                     hello: {
-//                         type: GraphQLString,
-//                         resolve() {
-//                             return 'world'
-//                         }
-//                     }
-//                 }
-//             })
-//         })
-//     }
-// }
+
