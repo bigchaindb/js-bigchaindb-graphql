@@ -1,0 +1,17 @@
+{
+  "name": "bigchaindb-graphql",
+  "version": "0.0.1",
+  "private": false,
+  "dependencies": {
+    "bigchaindb-driver": "^0.3.0",
+    "graphql": "^0.10.5",
+    "graphql-type-json": "^0.1.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1"
+  },
+  "scripts": {
+    "test": "./node_modules/babel-cli/bin/babel-node.js ./test/queries.js"
+  }
+}
