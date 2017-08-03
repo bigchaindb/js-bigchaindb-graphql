@@ -1,5 +1,7 @@
 # [![js-bigchaindb-graphql](media/repo-banner@2x.png)](https://www.bigchaindb.com)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bigchaindb/js-bigchaindb-graphql.svg)](https://greenkeeper.io/)
+
 > Example GraphQL API running on top of the BigchainDB JavaScript driver.
 
 [![Build Status](https://travis-ci.org/bigchaindb/js-bigchaindb-graphql.svg?branch=master)](https://travis-ci.org/bigchaindb/js-bigchaindb-graphql)
