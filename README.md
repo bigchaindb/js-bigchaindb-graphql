@@ -1,26 +1,40 @@
-# GraphQL for BigchainDB in JavaScript
+# [![js-bigchaindb-graphql](media/repo-banner@2x.png)](https://www.bigchaindb.com)
+
+> Example GraphQL API running on top of the BigchainDB JavaScript driver.
 
 [![Build Status](https://travis-ci.org/bigchaindb/js-bigchaindb-graphql.svg?branch=master)](https://travis-ci.org/bigchaindb/js-bigchaindb-graphql)
 [![js ascribe](https://img.shields.io/badge/js-ascribe-39BA91.svg)](https://github.com/ascribe/javascript)
 
-This is an example GraphQL api running on top of the BigchainDB JavaScript driver.
+## Table of Contents
 
-The code does not talk to the backend database directly. It just retrieves
-whatever data it needs using the JavaScript driver and constructs the GraphQL
-objects from the returned json.
+- [Setup](#setup)
+- [Usage](#usage)
+- [Examples](#examples)
+    - [Query a transaction](#query-a-transaction)
+    - [Query multiple transactions by `asset_id`](#query-multiple-transactions-by-asset_id)
+    - [Query only transfer transactions with `asset_id`](#query-only-transfer-transactions-with-asset_id)
+    - [Query the blocks and votes for a transaction](#query-the-blocks-and-votes-for-a-transaction)
+    - [Query the outputs endpoint by public key](#query-the-outputs-endpoint-by-public-key)
+    - [Query the outputs endpoint by public key](#query-the-outputs-endpoint-by-public-key-1)
+    - [Query a block and the associated votes](#query-a-block-and-the-associated-votes)
+    - [Query the votes for a specific block](#query-the-votes-for-a-specific-block)
+    - [Text-search on transactions that matches the asset fields/values](#text-search-on-transactions-that-matches-the-asset-fieldsvalues)
+- [License](#license)
 
 ## Setup
 
 ```bash
 $ npm install bigchaindb-graphql
 ```
+
 or 
 
 ```bash
 $ yarn add bigchaindb-graphql
 ```
 
-(Optional) Prepopulate BigchainDB with the example transactions, see [here](https://github.com/bigchaindb/graphql-bigchaindb):
+(Optional) Prepopulate BigchainDB with the example transactions, see [bigchaindb/graphql-bigchaindb](https://github.com/bigchaindb/graphql-bigchaindb):
+
 ```bash
 $ python prepopulate.py
 ```
@@ -31,6 +45,8 @@ $ npm run test
 ```
 
 ## Usage
+
+The code does not talk to the backend database directly. It just retrieves whatever data it needs using the JavaScript driver and constructs the GraphQL objects from the returned JSON.
 
 ```javascript
 import { graphql } from 'graphql'
@@ -61,9 +77,10 @@ graphql(BigchainDBSchema, queryTransaction).then(result => {
 
 ## Examples
 
-After prepopulating BigchainDB with the transactions provided you can run the following queries in the browser or node.
+After prepopulating BigchainDB with the transactions provided you can run the following queries in the browser or Node.js.
 
-- Query a transaction:
+### Query a transaction
+
 ```graphql
 query {
     transaction(id:"3b3fd7128580280052595b9bcda98895a851793cba77402ca4de0963be958c9e") {
@@ -86,7 +103,8 @@ query {
 }
 ```
 
-- Query multiple transactions by asset id:
+### Query multiple transactions by `asset_id`
+
 ```graphql
 query {
     transactions(asset_id:"3b3fd7128580280052595b9bcda98895a851793cba77402ca4de0963be958c9e") {
@@ -101,7 +119,8 @@ query {
 }
 ```
 
-- Query only transfer transactions with asset id:
+### Query only transfer transactions with `asset_id`
+
 ```graphql
 query {
     transactions(asset_id:"3b3fd7128580280052595b9bcda98895a851793cba77402ca4de0963be958c9e", operation:"TRANSFER") {
@@ -125,7 +144,8 @@ query {
 }
 ```
 
-- Query the blocks and votes for a transaction:
+### Query the blocks and votes for a transaction
+
 ```graphql
 query {
     transaction(id:"3b3fd7128580280052595b9bcda98895a851793cba77402ca4de0963be958c9e") {
@@ -148,7 +168,8 @@ query {
 }
 ```
 
-- Query the outputs endpoint by public key
+### Query the outputs endpoint by public key
+
 ```graphql
 query {
     outputs(publicKey:"FxEfUt9ArymGeCB99dZtfCUcsKwC29c8AHZ9EPnVWcyL") {
@@ -163,7 +184,8 @@ query {
 }
 ```
 
-- Query the outputs endpoint by public key
+### Query the outputs endpoint by public key
+
 ```graphql
 query {
     outputs(publicKey:"FxEfUt9ArymGeCB99dZtfCUcsKwC29c8AHZ9EPnVWcyL") {
@@ -178,7 +200,8 @@ query {
 }
 ```
 
-- Query a block and the associated votes:
+### Query a block and the associated votes
+
 ```graphql
 query {
     block(id: "c44c06985175ee0cf210fff65c44e63aa06300999e5e7654e13678582522e8f0") {
@@ -201,7 +224,8 @@ query {
 }
 ```
 
-- Query the votes for a specific block
+### Query the votes for a specific block
+
 ```graphql
 query {
     votes(block_id: "c44c06985175ee0cf210fff65c44e63aa06300999e5e7654e13678582522e8f0") {
@@ -218,7 +242,8 @@ query {
 }
 ```
 
-- Do a text-search on transactions that matches the asset fields/values:
+### Text-search on transactions that matches the asset fields/values
+
 ```graphql
 query {
     search(text: "b") {
@@ -226,4 +251,22 @@ query {
         asset
     } 
 }
+```
+
+## License
+
+```
+Copyright 2017 BigchainDB GmbH
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```
