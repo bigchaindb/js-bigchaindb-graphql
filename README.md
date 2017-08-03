@@ -1,5 +1,7 @@
 # GraphQL for BigchainDB in JavaScript
 
+[![Build Status](https://travis-ci.org/bigchaindb/js-bigchaindb-graphql.svg?branch=master)](https://travis-ci.org/bigchaindb/js-bigchaindb-graphql)
+
 This is an example GraphQL api running on top of the BigchainDB JavaScript driver.
 
 The code does not talk to the backend database directly. It just retrieves
