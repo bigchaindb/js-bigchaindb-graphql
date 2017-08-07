@@ -4,6 +4,7 @@
   "private": false,
   "dependencies": {
     "bigchaindb-driver": "^0.3.0",
+    "bip39": "^2.3.1",
     "graphql": "^0.10.5",
     "graphql-type-json": "^0.1.4"
   },

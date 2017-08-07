@@ -106,7 +106,6 @@ export default class BigchainDBGraphQLSchema {
             }
         })
 
-
         this.queryType = new GraphQLObjectType({
             name: 'Query',
             fields: {
@@ -179,10 +178,53 @@ export default class BigchainDBGraphQLSchema {
             }
         })
 
+        this.mutationType = new GraphQLObjectType({
+            name: 'Mutation',
+            fields: {
+                transaction: {
+                    type: this.TransactionType,
+                    args: {
+                        publicKey: { type: GraphQLString },
+                        privateKey: { type: GraphQLString },
+                        payload: { type: GraphQLJSON },
+                        metadata: { type: GraphQLJSON }
+                    },
+                    resolve(root, { publicKey, privateKey, payload, metadata }) {
+                        return conn.publishTransaction(publicKey, privateKey, payload, metadata)
+                    }
+                },
+                transfer: {
+                    type: this.TransactionType,
+                    args: {
+                        tx: { type: GraphQLJSON },
+                        fromPublicKey: { type: GraphQLString },
+                        fromPrivateKey: { type: GraphQLString },
+                        toPublicKey: { type: GraphQLString },
+                        metadata: { type: GraphQLJSON }
+                    },
+                    resolve(root, {
+                        tx,
+                        fromPublicKey,
+                        fromPrivateKey,
+                        toPublicKey,
+                        metadata }
+                    ) {
+                        return conn.transferTransaction(
+                            tx,
+                            fromPublicKey,
+                            fromPrivateKey,
+                            toPublicKey,
+                            metadata
+                        )
+                    }
+                }
+            }
+        })
+
         this.schema = new GraphQLSchema({
             query: this.queryType,
+            mutation: this.mutationType,
             types: [this.TransactionType],
         })
     }
 }
-
