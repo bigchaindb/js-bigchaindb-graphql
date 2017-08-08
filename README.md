@@ -2,6 +2,7 @@
 
 > Example GraphQL API running on top of the BigchainDB JavaScript driver.
 
+[![npm](https://img.shields.io/npm/v/bigchaindb-graphql.svg)](https://www.npmjs.com/package/bigchaindb-graphql)
 [![Build Status](https://travis-ci.org/bigchaindb/js-bigchaindb-graphql.svg?branch=master)](https://travis-ci.org/bigchaindb/js-bigchaindb-graphql)
 [![js ascribe](https://img.shields.io/badge/js-ascribe-39BA91.svg)](https://github.com/ascribe/javascript)
 [![Greenkeeper badge](https://badges.greenkeeper.io/bigchaindb/js-bigchaindb-graphql.svg)](https://greenkeeper.io/)
