@@ -30,7 +30,7 @@
 $ npm install bigchaindb-graphql
 ```
 
-or 
+or
 
 ```bash
 $ yarn add bigchaindb-graphql
@@ -69,7 +69,7 @@ const queryTransaction = `
         operation
         asset
         metadata
-    } 
+    }
 }
 `
 
@@ -223,7 +223,7 @@ query {
             }
         }
         signature
-    } 
+    }
 }
 ```
 
@@ -241,7 +241,7 @@ query {
             invalid_reason
             timestamp
         }
-    } 
+    }
 }
 ```
 
@@ -252,7 +252,117 @@ query {
     search(text: "b") {
         id
         asset
-    } 
+    }
+}
+```
+
+### Create a new transaction
+> note: graphql doesn't support unstructured objects, hence the `asset` and `metadata` need to be serialized in an URI encoded string (e.g. `encodeURIComponent(JSON.stringify({ metadata: 'metavalue' }))`)
+
+```graphql
+mutation {
+    transaction(
+        publicKey: "4AzdUiGGjUNmSp75dNGe5Qw36czV8PdaLDkCY2bdZpcH",
+        privateKey: "57c3KBq7hiQ7JLHuVWzBGfwCKeLfm1oFbv9CgP2uxwhN",
+        asset: "{ assetdata: 'assetvalue' }",
+        metadata: "{ metadata: 'metavalue' }"
+    ) {
+        id
+        operation
+        asset
+        metadata
+        inputs {
+            owners_before
+            fulfillment
+            fulfills {
+                output_index
+                transaction {
+                    id
+                    asset
+                    metadata
+                    inputs {
+                        fulfills {
+                            transaction {
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        outputs {
+            condition
+            public_keys
+            amount
+        }
+        blocks {
+            block {
+                node_pubkey
+                timestamp
+            }
+            votes {
+                node_pubkey
+                vote {
+                    timestamp
+                }
+            }
+        }
+    }
+}
+```
+
+### Transfer transaction different public key
+> note: graphql doesn't support unstructured objects, hence the `tx` and `metadata` need to be serialized in an URI encoded string (e.g. `encodeURIComponent(JSON.stringify(tx))`)
+```graphql
+mutation {
+    transfer(
+        tx: <transaction to transfer>,
+        fromPublicKey: "8bpyjMowghbfN8vMTAyueQVggjtR9geACU8JeXLQHawY",
+        fromPrivateKey: "DQGfjg1kseHZTedxsUjwTXukGZ8hPNjioJ7Btq9wyiTW",
+        toPublicKey: "GvjRh229J3GEgGnSjKzdv81eiEUtjyftBsJzU2Urmfud",
+        metadata: "{metadata: 'newmetavalue'}"
+    ) {
+        id
+        operation
+        asset
+        metadata
+        inputs {
+            owners_before
+            fulfillment
+            fulfills {
+                output_index
+                transaction {
+                    id
+                    asset
+                    metadata
+                    inputs {
+                        fulfills {
+                            transaction {
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        outputs {
+            condition
+            public_keys
+            amount
+        }
+        blocks {
+            block {
+                node_pubkey
+                timestamp
+            }
+            votes {
+                node_pubkey
+                vote {
+                    timestamp
+                }
+            }
+        }
+    }
 }
 ```
 
