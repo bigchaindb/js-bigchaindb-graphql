@@ -1,6 +1,6 @@
 {
   "name": "bigchaindb-graphql",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/node/index.js",
   "browser": "./dist/browser/bigchaindb-graphql.cjs2.min.js",
   "dependencies": {
