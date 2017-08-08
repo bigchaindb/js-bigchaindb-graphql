@@ -21,6 +21,8 @@
     - [Query a block and the associated votes](#query-a-block-and-the-associated-votes)
     - [Query the votes for a specific block](#query-the-votes-for-a-specific-block)
     - [Text-search on transactions that matches the asset fields/values](#text-search-on-transactions-that-matches-the-asset-fieldsvalues)
+    - [Create a new transaction](#create-a-new-transaction)
+    - [Transfer transaction different public key](#transfer-transaction-different-public-key)
 - [npm releases](#npm-releases)
 - [License](#license)
 
