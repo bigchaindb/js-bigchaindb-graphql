@@ -185,14 +185,14 @@ export default class BigchainDBGraphQLSchema {
                     args: {
                         publicKey: { type: GraphQLString },
                         privateKey: { type: GraphQLString },
-                        payload: { type: GraphQLString },
+                        asset: { type: GraphQLString },
                         metadata: { type: GraphQLString }
                     },
-                    resolve(root, { publicKey, privateKey, payload, metadata }) {
+                    resolve(root, { publicKey, privateKey, asset, metadata }) {
                         return conn.createTransaction(
                             publicKey,
                             privateKey,
-                            JSON.parse(decodeURIComponent(payload)),
+                            JSON.parse(decodeURIComponent(asset)),
                             JSON.parse(decodeURIComponent(metadata))
                         )
                     }

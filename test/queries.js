@@ -170,13 +170,13 @@ function prepareQuerySearch(searchString) {
         `
 }
 
-function prepareMutationTransaction(fromPublicKey, fromPrivateKey, payload, metadata) {
+function prepareMutationTransaction(fromPublicKey, fromPrivateKey, asset, metadata) {
     return `
         mutation {
             transaction(
                 publicKey: "${fromPublicKey}",
                 privateKey: "${fromPrivateKey}",
-                payload: "${payload}",
+                asset: "${asset}",
                 metadata: "${metadata}"
             ) {
                 id
@@ -281,12 +281,12 @@ function prepareTransferMutation(transaction, fromPublicKey, fromPrivateKey, toP
 
 
 // create transaction
-const transactionPayload = encodeURIComponent(JSON.stringify({ myassetdata: 'myassetvalue' }))
+const transactionAsset = encodeURIComponent(JSON.stringify({ myassetdata: 'myassetvalue' }))
 const transactionMetadata = encodeURIComponent(JSON.stringify({ mymetadata: 'mymetavalue' }))
 const mutationTransaction = prepareMutationTransaction(
     aliceKeypair.publicKey,
     aliceKeypair.privateKey,
-    transactionPayload,
+    transactionAsset,
     transactionMetadata
 )
 graphql(BigchainDBSchema, mutationTransaction).then(transaction => {
