@@ -8,7 +8,6 @@ import {
 } from 'graphql'
 import GraphQLJSON from 'graphql-type-json'
 
-
 export default class BigchainDBGraphQLSchema {
     constructor(conn) {
         this.FulfillsType = new GraphQLObjectType({
@@ -186,21 +185,26 @@ export default class BigchainDBGraphQLSchema {
                     args: {
                         publicKey: { type: GraphQLString },
                         privateKey: { type: GraphQLString },
-                        payload: { type: GraphQLJSON },
-                        metadata: { type: GraphQLJSON }
+                        payload: { type: GraphQLString },
+                        metadata: { type: GraphQLString }
                     },
                     resolve(root, { publicKey, privateKey, payload, metadata }) {
-                        return conn.publishTransaction(publicKey, privateKey, payload, metadata)
+                        return conn.createTransaction(
+                            publicKey,
+                            privateKey,
+                            JSON.parse(decodeURIComponent(payload)),
+                            JSON.parse(decodeURIComponent(metadata))
+                        )
                     }
                 },
                 transfer: {
                     type: this.TransactionType,
                     args: {
-                        tx: { type: GraphQLJSON },
+                        tx: { type: GraphQLString },
                         fromPublicKey: { type: GraphQLString },
                         fromPrivateKey: { type: GraphQLString },
                         toPublicKey: { type: GraphQLString },
-                        metadata: { type: GraphQLJSON }
+                        metadata: { type: GraphQLString }
                     },
                     resolve(root, {
                         tx,
@@ -210,11 +214,11 @@ export default class BigchainDBGraphQLSchema {
                         metadata }
                     ) {
                         return conn.transferTransaction(
-                            tx,
+                            JSON.parse(decodeURIComponent(tx)),
                             fromPublicKey,
                             fromPrivateKey,
                             toPublicKey,
-                            metadata
+                            JSON.parse(decodeURIComponent(metadata))
                         )
                     }
                 }

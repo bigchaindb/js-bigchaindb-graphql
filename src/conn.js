@@ -42,7 +42,7 @@ export default class BigchainDBGraphQLConnection {
             ))
     }
 
-    publishTransaction(publicKey, privateKey, payload, metadata) {
+    createTransaction(publicKey, privateKey, payload, metadata) {
         // Create a transation
         const tx = driver.Transaction.makeCreateTransaction(
             payload,
