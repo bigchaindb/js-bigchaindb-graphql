@@ -257,13 +257,14 @@ query {
 ```
 
 ### Create a new transaction
+> note: graphql doesn't support unstructured objects, hence the `asset` and `metadata` need to be serialized in an URI encoded string (e.g. `encodeURIComponent(JSON.stringify({ metadata: 'metavalue' }))`)
 
 ```graphql
 mutation {
     transaction(
         publicKey: "4AzdUiGGjUNmSp75dNGe5Qw36czV8PdaLDkCY2bdZpcH",
         privateKey: "57c3KBq7hiQ7JLHuVWzBGfwCKeLfm1oFbv9CgP2uxwhN",
-        payload: "{ assetdata: 'assetvalue' }",
+        asset: "{ assetdata: 'assetvalue' }",
         metadata: "{ metadata: 'metavalue' }"
     ) {
         id
@@ -311,7 +312,7 @@ mutation {
 ```
 
 ### Transfer transaction different public key
-
+> note: graphql doesn't support unstructured objects, hence the `tx` and `metadata` need to be serialized in an URI encoded string (e.g. `encodeURIComponent(JSON.stringify(tx))`)
 ```graphql
 mutation {
     transfer(
