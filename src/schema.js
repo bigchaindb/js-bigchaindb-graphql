@@ -123,7 +123,7 @@ export default class BigchainDBGraphQLSchema {
                         asset_id: { type: GraphQLString },
                         operation: { type: GraphQLString }
                     },
-                    resolve(root, { asset_id, operation }) {
+                    resolve(root, { asset_id, operation }) { // eslint-disable-line camelcase
                         return conn.listTransactions(asset_id, operation)
                     }
                 },
@@ -133,7 +133,7 @@ export default class BigchainDBGraphQLSchema {
                         public_key: { type: GraphQLString },
                         spent: { type: GraphQLBoolean }
                     },
-                    resolve(root, { public_key, spent }) {
+                    resolve(root, { public_key, spent }) { // eslint-disable-line camelcase
                         return conn.listOutputs(public_key, spent)
                     }
                 },
@@ -152,7 +152,7 @@ export default class BigchainDBGraphQLSchema {
                         transaction_id: { type: GraphQLString },
                         status: { type: GraphQLString },
                     },
-                    resolve(root, { transaction_id, status }) {
+                    resolve(root, { transaction_id, status }) { // eslint-disable-line camelcase
                         return conn.listBlocks(transaction_id, status)
                     }
                 },
@@ -161,7 +161,7 @@ export default class BigchainDBGraphQLSchema {
                     args: {
                         block_id: { type: GraphQLString },
                     },
-                    resolve(root, { block_id }) {
+                    resolve(root, { block_id }) { // eslint-disable-line camelcase
                         return conn.listVotes(block_id)
                     }
                 },
@@ -188,7 +188,9 @@ export default class BigchainDBGraphQLSchema {
                         asset: { type: GraphQLString },
                         metadata: { type: GraphQLString }
                     },
-                    resolve(root, { publicKey, privateKey, asset, metadata }) {
+                    resolve(root, {
+                        publicKey, privateKey, asset, metadata
+                    }) {
                         return conn.createTransaction(
                             publicKey,
                             privateKey,
@@ -211,8 +213,8 @@ export default class BigchainDBGraphQLSchema {
                         fromPublicKey,
                         fromPrivateKey,
                         toPublicKey,
-                        metadata }
-                    ) {
+                        metadata
+                    }) {
                         return conn.transferTransaction(
                             JSON.parse(decodeURIComponent(tx)),
                             fromPublicKey,

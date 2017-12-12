@@ -26,9 +26,7 @@ export default class BigchainDBGraphQLConnection {
 
     listBlocks(transactionId) {
         return this.conn.listBlocks(transactionId)
-            .then(blockIds => Promise.all(
-                blockIds.map(blockId => this.conn.getBlock(blockId))
-            ))
+            .then(blockIds => Promise.all(blockIds.map(blockId => this.conn.getBlock(blockId))))
     }
 
     listVotes(blockId) {
@@ -37,9 +35,7 @@ export default class BigchainDBGraphQLConnection {
 
     searchAssets(text) {
         return this.conn.searchAssets(text)
-            .then(assetList => Promise.all(
-                assetList.map(asset => this.conn.getTransaction(asset.id))
-            ))
+            .then(assetList => Promise.all(assetList.map(asset => this.conn.getTransaction(asset.id))))
     }
 
     createTransaction(publicKey, privateKey, asset, metadata) {
@@ -48,8 +44,7 @@ export default class BigchainDBGraphQLConnection {
             asset,
             metadata,
             [
-                driver.Transaction.makeOutput(
-                    driver.Transaction.makeEd25519Condition(publicKey))
+                driver.Transaction.makeOutput(driver.Transaction.makeEd25519Condition(publicKey))
             ],
             publicKey
         )
@@ -68,9 +63,7 @@ export default class BigchainDBGraphQLConnection {
             tx,
             metadata,
             [
-                driver.Transaction.makeOutput(
-                    driver.Transaction.makeEd25519Condition(toPublicKey)
-                )
+                driver.Transaction.makeOutput(driver.Transaction.makeEd25519Condition(toPublicKey))
             ],
             0
         )
