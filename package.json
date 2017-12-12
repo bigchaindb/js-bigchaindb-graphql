@@ -1,6 +1,6 @@
 {
   "name": "bigchaindb-graphql",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./dist/node/index.js",
   "browser": "./dist/browser/bigchaindb-graphql.cjs2.min.js",
   "repository": {
@@ -35,7 +35,7 @@
     "build:dist": "cross-env NODE_ENV=production webpack -p",
     "clean": "rimraf dist/bundle dist/node",
     "test": "npm run lint && ./node_modules/babel-cli/bin/babel-node.js ./test/queries.js",
-    "prepublishOnly": "npm update && npm run build",
+    "prepublishOnly": "npm run build",
     "release": "./node_modules/release-it/bin/release-it.js --src.tagName='v%s' --github.release --npm.publish --non-interactive",
     "release-minor": "./node_modules/release-it/bin/release-it.js minor --src.tagName='v%s' --github.release --npm.publish --non-interactive",
     "release-major": "./node_modules/release-it/bin/release-it.js major --src.tagName='v%s' --github.release --npm.publish --non-interactive"
