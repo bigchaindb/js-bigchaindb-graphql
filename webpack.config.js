@@ -2,110 +2,32 @@
 
 'use strict'
 
-const path = require('path')
-
-const webpack = require('webpack')
-
 const PRODUCTION = process.env.NODE_ENV === 'production'
 
-const PATHS = {
-    ENTRY: path.resolve(__dirname, './src/index.js'),
-    BUNDLE: path.resolve(__dirname, 'dist/browser'),
-    NODE_MODULES: path.resolve(__dirname, 'node_modules'),
+const common = require('./webpack.common.js')
+
+const { outputs } = require('./webpack.parts.js')
+
+// '[libraryTarget]': [file extension]
+const OUTPUT_MAPPING = {
+    'amd': 'amd',
+    'commonjs': 'cjs',
+    'commonjs2': 'cjs2',
+    'umd': 'umd',
+    'window': 'window',
 }
 
-const OUTPUTS = [
-    {
-        filename: PRODUCTION ? 'bigchaindb-graphql.window.min.js' : 'bigchaindb-graphql.window.js',
-        library: 'BigchainDB-GraphQL',
-        libraryTarget: 'window',
-        path: PATHS.BUNDLE,
-    },
-    {
-        filename: PRODUCTION ? 'bigchaindb-graphql.umd.min.js' : 'bigchaindb-graphql.umd.js',
-        library: 'bigchaindb-graphql',
-        libraryTarget: 'umd',
-        path: PATHS.BUNDLE,
-    },
-    {
-        filename: PRODUCTION ? 'bigchaindb-graphql.cjs.min.js' : 'bigchaindb-graphql.cjs.js',
-        library: 'bigchaindb-graphql',
-        libraryTarget: 'commonjs',
-        path: PATHS.BUNDLE,
-    },
-    {
-        filename: PRODUCTION ? 'bigchaindb-graphql.cjs2.min.js' : 'bigchaindb-graphql.cjs2.js',
-        library: 'bigchaindb-graphql',
-        libraryTarget: 'commonjs2',
-        path: PATHS.BUNDLE,
-    },
-    {
-        filename: PRODUCTION ? 'bigchaindb-graphql.amd.min.js' : 'bigchaindb-graphql.amd.js',
-        library: 'bigchaindb-graphql',
-        libraryTarget: 'amd',
-        path: PATHS.BUNDLE,
+const OVERRIDES = {
+    // optimization: {
+    //     minimize: false
+    // }
+    node: {
+      fs: "empty"
     }
-]
-
-
-/** PLUGINS **/
-const PLUGINS = [
-    new webpack.NoEmitOnErrorsPlugin(),
-]
-
-const PROD_PLUGINS = [
-    new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false,
-        },
-        output: {
-            comments: false,
-        },
-        sourceMap: true,
-    }),
-    new webpack.LoaderOptionsPlugin({
-        debug: false,
-        minimize: true,
-    }),
-]
+}
 
 if (PRODUCTION) {
-    PLUGINS.push(...PROD_PLUGINS)
+    module.exports = outputs(common, 'production', OUTPUT_MAPPING, OVERRIDES)
+} else {
+    module.exports = outputs(common, 'development', OUTPUT_MAPPING, OVERRIDES)
 }
-
-const configBoilerplate = {
-    entry: [PATHS.ENTRY],
-
-    devtool: PRODUCTION ? '#source-map' : '#inline-source-map',
-
-    resolve: {
-        extensions: ['.js'],
-        modules: ['node_modules'], // Don't use absolute path here to allow recursive matching
-    },
-
-    plugins: PLUGINS,
-
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: [PATHS.NODE_MODULES],
-                use: [{
-                    loader: 'babel-loader',
-                    options: {
-                        cacheDirectory: true,
-                    },
-                }],
-            },
-        ],
-    },
-}
-
-/** EXPORTED WEBPACK CONFIG **/
-const config = OUTPUTS.map(output => {
-    const configCopy = Object.assign({}, configBoilerplate)
-    configCopy.output = output
-    return configCopy
-})
-
-module.exports = config

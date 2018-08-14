@@ -51,18 +51,6 @@ function prepareQueryTransaction(id) {
                     public_keys
                     amount
                 }
-                blocks {
-                    block {
-                        node_pubkey
-                        timestamp
-                    }
-                    votes {
-                        node_pubkey
-                        vote {
-                            timestamp
-                        }
-                    }
-                }
             }
         }
         `
@@ -74,11 +62,6 @@ function prepareQueryTransactionList(assetId) {
             transactions(asset_id: "${assetId}") {
                 id
                 operation
-                blocks {
-                    block {
-                        timestamp
-                    }
-                }
             }
         }
         `
@@ -92,67 +75,6 @@ function prepareQueryOutputList(publicKey) {
                 transaction {
                     id
                     metadata
-                    blocks {
-                        block {
-                            timestamp
-                        }
-                    }
-                }
-            }
-        }
-        `
-}
-
-function prepareQueryBlockList(transactionId) {
-    return `
-        {
-            blocks(transaction_id: "${transactionId}") {
-                id
-                block {
-                    timestamp
-                }
-                signature
-            }
-        }
-        `
-}
-
-function prepareQueryBlock(blockId) {
-    return `
-        {
-            block(id: "${blockId}") {
-                id
-                block {
-                    timestamp
-                    transactions {
-                        id
-                    }
-                    node_pubkey
-                    voters
-                }
-                votes {
-                    vote {
-                        timestamp
-                    }
-                }
-                signature
-            }
-        }
-        `
-}
-
-function prepareQueryVoteList(blockId) {
-    return `
-        {
-            votes(block_id: "${blockId}") {
-                node_pubkey
-                signature
-                vote {
-                    voting_for_block
-                    previous_block
-                    is_block_valid
-                    invalid_reason
-                    timestamp
                 }
             }
         }
@@ -207,18 +129,6 @@ function prepareMutationTransaction(fromPublicKey, fromPrivateKey, asset, metada
                     public_keys
                     amount
                 }
-                blocks {
-                    block {
-                        node_pubkey
-                        timestamp
-                    }
-                    votes {
-                        node_pubkey
-                        vote {
-                            timestamp
-                        }
-                    }
-                }
             }
         }
         `
@@ -262,18 +172,6 @@ function prepareTransferMutation(transaction, fromPublicKey, fromPrivateKey, toP
                     public_keys
                     amount
                 }
-                blocks {
-                    block {
-                        node_pubkey
-                        timestamp
-                    }
-                    votes {
-                        node_pubkey
-                        vote {
-                            timestamp
-                        }
-                    }
-                }
             }
         }
         `
@@ -290,7 +188,7 @@ const mutationTransaction = prepareMutationTransaction(
     transactionMetadata
 )
 graphql(BigchainDBSchema, mutationTransaction).then(transaction => {
-    console.log(JSON.stringify(transaction, null, 2))
+    console.log("graphql 1", JSON.stringify(transaction.data.transaction.id, null, 2))
 
     // transfer created transaction
     const transactionData = encodeURIComponent(JSON.stringify(transaction.data.transaction))
@@ -303,41 +201,26 @@ graphql(BigchainDBSchema, mutationTransaction).then(transaction => {
         transferMetadata
     )
     graphql(BigchainDBSchema, mutationTransfer).then(transfer => {
-        console.log(JSON.stringify(transfer, null, 2))
+        console.log("graphql 2", JSON.stringify(transfer, null, 2))
 
         const queryTransaction = prepareQueryTransaction(transaction.data.transaction.id)
         graphql(BigchainDBSchema, queryTransaction).then(result => {
-            console.log(JSON.stringify(result, null, 2))
+            console.log("graphql 3", JSON.stringify(result, null, 2))
         })
 
         const queryTransactionList = prepareQueryTransactionList(transaction.data.transaction.id)
         graphql(BigchainDBSchema, queryTransactionList).then(transactionList => {
-            console.log(JSON.stringify(transactionList, null, 2))
+            console.log("graphql 4", JSON.stringify(transactionList, null, 2))
         })
 
         const queryOutputList = prepareQueryOutputList(bobKeypair.publicKey)
         graphql(BigchainDBSchema, queryOutputList).then(result => {
-            console.log(JSON.stringify(result, null, 2))
-        })
-
-        const queryBlockList = prepareQueryBlockList(transaction.data.transaction.id)
-        graphql(BigchainDBSchema, queryBlockList).then(blockList => {
-            console.log(JSON.stringify(blockList, null, 2))
-
-            const queryBlock = prepareQueryBlock(blockList.data.blocks[0].id)
-            graphql(BigchainDBSchema, queryBlock).then(block => {
-                console.log(JSON.stringify(block, null, 2))
-            })
-
-            const queryVoteList = prepareQueryVoteList(blockList.data.blocks[0].id)
-            graphql(BigchainDBSchema, queryVoteList).then(result => {
-                console.log(JSON.stringify(result, null, 2))
-            })
+            console.log("graphql 5", JSON.stringify(result, null, 2))
         })
 
         const querySearch = prepareQuerySearch('myassetvalue')
         graphql(BigchainDBSchema, querySearch).then(queryResponse => {
-            console.log(JSON.stringify(queryResponse, null, 2))
+            console.log("graphql 8", JSON.stringify(queryResponse, null, 2))
         })
     })
 })

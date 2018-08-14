@@ -50,59 +50,8 @@ export default class BigchainDBGraphQLSchema {
                 asset: { type: GraphQLJSON },
                 metadata: { type: GraphQLJSON },
                 inputs: { type: new GraphQLList(this.InputType) },
-                outputs: { type: new GraphQLList(this.OutputType) },
-                blocks: {
-                    type: new GraphQLList(this.BlockType),
-                    resolve(root) {
-                        return conn.listBlocks(root.id)
-                    }
-                }
+                outputs: { type: new GraphQLList(this.OutputType) }
             })
-        })
-
-        this.VoteType = new GraphQLObjectType({
-            name: 'Vote',
-            fields: {
-                node_pubkey: { type: GraphQLString },
-                signature: { type: GraphQLString },
-                vote: {
-                    type: new GraphQLObjectType({
-                        name: 'VoteIntern',
-                        fields: {
-                            voting_for_block: { type: GraphQLString },
-                            previous_block: { type: GraphQLString },
-                            is_block_valid: { type: GraphQLBoolean },
-                            invalid_reason: { type: GraphQLString },
-                            timestamp: { type: GraphQLString }
-                        }
-                    })
-                }
-            }
-        })
-
-        this.BlockType = new GraphQLObjectType({
-            name: 'Block',
-            fields: {
-                id: { type: GraphQLString },
-                block: {
-                    type: new GraphQLObjectType({
-                        name: 'BlockIntern',
-                        fields: {
-                            timestamp: { type: GraphQLString },
-                            transactions: { type: new GraphQLList(this.TransactionType) },
-                            node_pubkey: { type: GraphQLString },
-                            voters: { type: new GraphQLList(GraphQLString) },
-                        }
-                    })
-                },
-                votes: {
-                    type: new GraphQLList(this.VoteType),
-                    resolve(root) {
-                        return conn.listVotes(root.id)
-                    }
-                },
-                signature: { type: GraphQLString }
-            }
         })
 
         this.queryType = new GraphQLObjectType({
@@ -135,34 +84,6 @@ export default class BigchainDBGraphQLSchema {
                     },
                     resolve(root, { public_key, spent }) { // eslint-disable-line camelcase
                         return conn.listOutputs(public_key, spent)
-                    }
-                },
-                block: {
-                    type: this.BlockType,
-                    args: {
-                        id: { type: GraphQLString }
-                    },
-                    resolve(root, { id }) {
-                        return conn.getBlock(id)
-                    }
-                },
-                blocks: {
-                    type: new GraphQLList(this.BlockType),
-                    args: {
-                        transaction_id: { type: GraphQLString },
-                        status: { type: GraphQLString },
-                    },
-                    resolve(root, { transaction_id, status }) { // eslint-disable-line camelcase
-                        return conn.listBlocks(transaction_id, status)
-                    }
-                },
-                votes: {
-                    type: new GraphQLList(this.VoteType),
-                    args: {
-                        block_id: { type: GraphQLString },
-                    },
-                    resolve(root, { block_id }) { // eslint-disable-line camelcase
-                        return conn.listVotes(block_id)
                     }
                 },
                 search: {

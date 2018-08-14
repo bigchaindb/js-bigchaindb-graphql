@@ -38,41 +38,38 @@ export default class BigchainDBGraphQLConnection {
             .then(assetList => Promise.all(assetList.map(asset => this.conn.getTransaction(asset.id))))
     }
 
-    createTransaction(publicKey, privateKey, asset, metadata) {
-        // Create a transation
-        const tx = driver.Transaction.makeCreateTransaction(
-            asset,
-            metadata,
-            [
-                driver.Transaction.makeOutput(driver.Transaction.makeEd25519Condition(publicKey))
-            ],
-            publicKey
-        )
+    createTransaction(publicKey, privateKey, payload, metadata) {
+        try {
+            // Create a transation
+            const tx = driver.Transaction.makeCreateTransaction(
+                payload,
+                metadata,
+                [
+                    driver.Transaction.makeOutput(driver.Transaction.makeEd25519Condition(publicKey))
+                ],
+                publicKey
+            )
 
-        // sign/fulfill the transaction
-        const txSigned = driver.Transaction.signTransaction(tx, privateKey)
-
-        // send it off to BigchainDB
-        return this.conn.postTransaction(txSigned)
-            .then(() => this.conn.pollStatusAndFetchTransaction(txSigned.id))
-            .then(() => txSigned)
+            // sign/fulfill the transaction
+            const txSigned = driver.Transaction.signTransaction(tx, privateKey)
+            return this.conn.postTransactionCommit(txSigned).then(() => txSigned)
+        } catch (error) {
+            return Promise.reject(error)
+        }
     }
 
     transferTransaction(tx, fromPublicKey, fromPrivateKey, toPublicKey, metadata) {
-        const txTransfer = driver.Transaction.makeTransferTransaction(
-            tx,
-            metadata,
-            [
-                driver.Transaction.makeOutput(driver.Transaction.makeEd25519Condition(toPublicKey))
-            ],
-            0
-        )
-
-        const txTransferSigned = driver.Transaction.signTransaction(txTransfer, fromPrivateKey)
-        // send it off to BigchainDB
-        return this.conn.postTransaction(txTransferSigned)
-            .then(() =>
-                this.conn.pollStatusAndFetchTransaction(txTransferSigned.id))
-            .then(() => txTransferSigned)
+        try {
+            const txTransfer = driver.Transaction.makeTransferTransaction(
+                [{ 'tx': tx, 'output_index': 0 }],
+                [driver.Transaction.makeOutput(driver.Transaction.makeEd25519Condition(toPublicKey))],
+                metadata,
+            )
+            const txTransferSigned = driver.Transaction.signTransaction(txTransfer, fromPrivateKey)
+            // send it off to BigchainDB
+            return this.conn.postTransactionCommit(txTransferSigned).then(() => txTransferSigned)
+        } catch (error) {
+            return Promise.reject(error)
+        }
     }
 }
