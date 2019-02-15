@@ -21,7 +21,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "cross-env": "^5.2.0",
-    "eslint": "^4.13.1",
+    "eslint": "^5.14.0",
     "eslint-config-ascribe": "^3.0.5",
     "eslint-plugin-import": "^2.8.0",
     "release-it": "^7.5.0",
