@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "bigchaindb-driver": "^4.1.0",
-    "bip39": "^2.5.0",
+    "bip39": "^3.0.1",
     "graphql": "^0.13.2",
     "graphql-type-json": "^0.2.1"
   },
