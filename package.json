@@ -12,7 +12,7 @@
     "bigchaindb-driver": "^4.1.0",
     "bip39": "^2.5.0",
     "graphql": "^0.13.2",
-    "graphql-type-json": "^0.2.1"
+    "graphql-type-json": "^0.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
