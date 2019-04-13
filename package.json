@@ -23,7 +23,7 @@
     "cross-env": "^5.2.0",
     "eslint": "^4.13.1",
     "eslint-config-ascribe": "^3.0.5",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "2.16.0",
     "release-it": "^7.5.0",
     "rimraf": "^2.6.2",
     "webpack": "^4.16.1",
