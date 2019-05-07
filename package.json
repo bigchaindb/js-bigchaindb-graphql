@@ -11,7 +11,7 @@
   "dependencies": {
     "bigchaindb-driver": "^4.1.0",
     "bip39": "^2.5.0",
-    "graphql": "^0.13.2",
+    "graphql": "^14.3.0",
     "graphql-type-json": "^0.2.1"
   },
   "devDependencies": {
